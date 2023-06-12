@@ -25,6 +25,7 @@ const add = async (req, res) => {
 
 const updateById = async (req, res) => {
   const { contactId } = req.params;
+  console.log(req.body)
   const result = await contacts.updateContact(contactId, req.body);
 
   if (!result) {
