@@ -12,17 +12,22 @@ router.get("/", ctrl.getAll);
 
 router.get("/:contactId", isValidId, ctrl.getById);
 
-router.post("/", validateBody(schemas.addSchema), ctrl.add);
+router.post("/", validateBody(schemas.addSchema, "missing fields"), ctrl.add);
 
 router.put(
   "/:contactId",
   isValidId,
-  validateBody(schemas.addSchema),
+  validateBody(schemas.addSchema, "missing fields"),
   ctrl.updateById
 );
 
 router.delete("/:contactId", isValidId, ctrl.deleteById);
 
-router.patch("/:contactId/favorite", isValidId, validateBody(schemas.updateFavoriteSchema), ctrl.updateStatusContact);
+router.patch(
+  "/:contactId/favorite",
+  isValidId,
+  validateBody(schemas.updateFavoriteSchema, "missing field favorite"),
+  ctrl.updateStatusContact
+);
 
 module.exports = router;

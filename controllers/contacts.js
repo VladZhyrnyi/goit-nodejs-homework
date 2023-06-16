@@ -1,11 +1,9 @@
 const { Contact } = require("../models/contact");
 
-const { HttpError, ctrlWrapper } = require("../helpers");
+const { HttpError, ctrlWrapper, isObjectEmpty } = require("../helpers");
 
 const getAll = async (req, res) => {
-  console.log("getting contacts");
   const result = await Contact.find();
-  console.log("result ===", result);
   res.json(result);
 };
 
@@ -25,8 +23,12 @@ const add = async (req, res) => {
   res.status(201).json(result);
 };
 
-const updateById = async (req, res) => {
+const updateById = async (req, res, next) => {
   const { contactId } = req.params;
+
+  if (isObjectEmpty(req.body)) {
+    next(HttpError(400, "missing field favorite"));
+  }
 
   const result = await Contact.findByIdAndUpdate(contactId, req.body, {
     new: true,
@@ -40,7 +42,7 @@ const updateById = async (req, res) => {
 
 const deleteById = async (req, res) => {
   const { contactId } = req.params;
-  console.log(contactId);
+
   const result = await Contact.findByIdAndRemove(contactId);
   if (!result) {
     throw HttpError(404, "Not found");
@@ -58,7 +60,7 @@ const updateStatusContact = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json(result);
+  res.status(200).json({ message: "contact deleted" });
 };
 
 module.exports = {
