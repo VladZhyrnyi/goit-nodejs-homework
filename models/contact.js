@@ -21,21 +21,21 @@ const contactSchema = new Schema(
       default: false,
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false }
 );
 
 contactSchema.post("save", handleMongooseError);
 
 const addSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
+  name: Joi.string().required().min(2).max(15),
+  email: Joi.string().required().email(),
   phone: Joi.string().required(),
   favorite: Joi.boolean(),
 });
 
 const updateFavoriteSchema = Joi.object({
-  favorite: Joi.boolean().required()
-})
+  favorite: Joi.boolean().required(),
+});
 
 const schemas = { addSchema, updateFavoriteSchema };
 

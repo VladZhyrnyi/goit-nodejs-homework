@@ -37,7 +37,7 @@ const updateById = async (req, res, next) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json(result);
+  res.json(result);
 };
 
 const deleteById = async (req, res) => {
@@ -47,7 +47,7 @@ const deleteById = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json(result);
+  res.json({ message: "contact deleted" });
 };
 
 const updateStatusContact = async (req, res) => {
@@ -60,7 +60,7 @@ const updateStatusContact = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json({ message: "contact deleted" });
+  res.json(result);
 };
 
 module.exports = {

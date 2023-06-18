@@ -12,12 +12,12 @@ router.get("/", ctrl.getAll);
 
 router.get("/:contactId", isValidId, ctrl.getById);
 
-router.post("/", validateBody(schemas.addSchema, "missing fields"), ctrl.add);
+router.post("/", validateBody(schemas.addSchema), ctrl.add);
 
 router.put(
   "/:contactId",
   isValidId,
-  validateBody(schemas.addSchema, "missing fields"),
+  validateBody(schemas.addSchema),
   ctrl.updateById
 );
 
