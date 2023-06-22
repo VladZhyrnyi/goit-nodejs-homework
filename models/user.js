@@ -3,31 +3,46 @@ const Joi = require("joi");
 
 const { handleMongooseError } = require("../helpers");
 
+const subs = ["starter", "pro", "business"];
+
 const userSchema = new Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
+    password: {
+      type: String,
+      required: [true, "Set password for user"],
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    subscription: {
+      type: String,
+      enum: subs,
+      default: subs[0],
+    },
+    token: {
+      type: String,
+      default: "",
+    },
   },
   { versionKey: false }
 );
 
 userSchema.post("save", handleMongooseError);
 
-const registerSchema = Joi.object({
-  name: Joi.string().required(),
+const authSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
+  password: Joi.string().required(),
 });
 
-const loginSchema = Joi.object({
-  name: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-});
+const subSchema = Joi.object({
+  subscription: Joi.string().valid(...subs)
+})
 
 const schemas = {
-  registerSchema,
-  loginSchema,
+  authSchema,
+  subSchema
 };
 
 const User = model("user", userSchema);
