@@ -33,7 +33,7 @@ userSchema.post("save", handleMongooseError);
 
 const authSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required(),
+  password: Joi.string().trim().required(),
 });
 
 const subSchema = Joi.object({
